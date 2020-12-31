@@ -1,5 +1,5 @@
 /.idea
-.env
+/src/.env
 school-ts-node-js-project.iml
 node_modules
 # Project exclude paths
