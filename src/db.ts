@@ -1,20 +1,22 @@
-// main methods (CRUD) + db connection; imports stuff from models.ts.
-
-import * as consts from './const';
+import {QueryResult} from "pg";
 
 const pg = require('pg');
+import * as constants from './const'
 
-const client = new pg.Client(consts.conString);
+const client = new pg.Client(constants.pghost);
 
-async function connectToDatabase() {
-    try {
-        await client.connect();
-        let result = await client
-            .query('SELECT NOW() AS "theTime"');
-        console.log('DB connected ', result.rows[0].theTime);
-    } catch (e) {
-        return e
-    }
+function connectToDatabase() {
+    return client.connect()
+        .then(() => {
+            return client
+                .query('SELECT NOW() AS "theTime"')
+        })
+        .then((data): void => {
+            console.log('DB connected ', data.rows[0].theTime);
+        })
+        .catch(err => {
+            console.error('Error: ', err)
+        })
 }
 
 export {connectToDatabase}
