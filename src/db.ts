@@ -9,7 +9,8 @@ const client = new pg.Client(consts.conString);
 async function connectToDatabase() {
     try {
         await client.connect();
-        let result = await client.query('SELECT NOW() AS "theTime"');
+        let result = await client
+            .query('SELECT NOW() AS "theTime"');
         console.log('DB connected ', result.rows[0].theTime);
     } catch (e) {
         return e
