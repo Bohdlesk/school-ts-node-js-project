@@ -25,4 +25,27 @@ function readDataFromTeacherDB(): Promise<QueryResult<any>> {
         .query('SELECT * FROM "public"."teacher"')
 }
 
+
+function getTargetMathTeachers() {
+    return client
+        .query('SELECT\n' +
+            '    day\n' +
+            '    lesson_id,\n' +
+            '    id,\n' +
+            '    teacher_id,\n' +
+            '    lesson.subject,\n' +
+            '    name\n' +
+            'FROM\n' +
+            '    lesson\n' +
+            '        INNER JOIN teacher\n' +
+            '                   ON teacher_id = id\n' +
+            'WHERE(\n' +
+            '                 LOWER(lesson.subject ) = \'math\'\n' +
+            '             AND\n' +
+            '                 start_time >= 8.5 and start_time <= 14.5\n' +
+            '             AND\n' +
+            '                 LOWER ( day ) = \'wednesday\'\n' +
+            '         )')
+}
+
 export {connectToDatabase, readDataFromTeacherDB, getTargetMathTeachers}
