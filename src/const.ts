@@ -1,3 +1,3 @@
 require('dotenv').config();
-
-export const conString = process.env.PGHOST;
+const conString: string = process.env.PGHOST;
+export const pghost = conString;
