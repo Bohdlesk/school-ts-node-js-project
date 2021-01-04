@@ -19,4 +19,10 @@ function connectToDatabase() {
         })
 }
 
-export {connectToDatabase}
+
+function readDataFromTeacherDB(): Promise<QueryResult<any>> {
+    return client
+        .query('SELECT * FROM "public"."teacher"')
+}
+
+export {connectToDatabase, readDataFromTeacherDB, getTargetMathTeachers}
