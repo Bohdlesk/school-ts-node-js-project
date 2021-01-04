@@ -1,7 +1,7 @@
 /.idea
 /src/.env
+/src/test.ts
 school-ts-node-js-project.iml
 node_modules
-# Project exclude paths
-/src/app.js
-/src/models.js
+dist
+test.sql

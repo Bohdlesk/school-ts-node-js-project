@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "module": "system",
-    "target": "es2017",
+    "module": "CommonJS",
+    "target": "ES2017",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmitOnError": true,
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node"
   },
   "exclude": [
     "node_modules"
