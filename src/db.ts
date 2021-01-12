@@ -25,27 +25,86 @@ function readDataFromTeacherDB(): Promise<QueryResult<any>> {
         .query('SELECT * FROM "public"."teacher"')
 }
 
-
 function getTargetMathTeachers() {
     return client
-        .query('SELECT\n' +
-            '    day\n' +
-            '    lesson_id,\n' +
-            '    id,\n' +
-            '    teacher_id,\n' +
-            '    lesson.subject,\n' +
-            '    name\n' +
-            'FROM\n' +
-            '    lesson\n' +
-            '        INNER JOIN teacher\n' +
-            '                   ON teacher_id = id\n' +
-            'WHERE(\n' +
-            '                 LOWER(lesson.subject ) = \'math\'\n' +
-            '             AND\n' +
-            '                 start_time >= 8.5 and start_time <= 14.5\n' +
-            '             AND\n' +
-            '                 LOWER ( day ) = \'wednesday\'\n' +
-            '         )')
+        .query(`SELECT name
+                FROM lesson
+                         INNER JOIN
+                     teacher
+                     ON teacher_id = id
+                WHERE (
+                              LOWER(subject) = 'math'
+                              AND
+                              start_time >= 8.5 and start_time <= 14.5
+                              AND
+                              LOWER(day) = 'thursday'
+                              AND
+                              classroom_id = 100
+                          )`)
 }
 
-export {connectToDatabase, readDataFromTeacherDB, getTargetMathTeachers}
+
+function readDataFromLessonDB() {
+    return client
+        .query('SELECT * FROM "public"."lesson"');
+}
+
+function addDataIntoTeacherDB(name: string, age: number, experience: number, sex: string, subject: string) {
+    return client
+        .query(`INSERT INTO "public"."teacher" (name, age, experience, sex, subject)
+                values ($1, $2, $3, $4, $5)`,
+            [name, age, experience, sex, subject]);
+}
+
+function addDataIntoLessonDB(day: string, start_time: number, teacher_id: number, zoom_url: string, classroom_id: number) {
+    return client
+        .query(`INSERT INTO "public"."lesson" (day, start_time, teacher_id, zoom_url, classroom_id)
+                values ($1, $2, $3, $4, $5)`,
+            [day, start_time, teacher_id, zoom_url, classroom_id]);
+}
+
+function updateTeacherDB(id: number, name: string, age: number, experience: number, sex: string, subject: string) {
+    return client
+        .query(`UPDATE "public"."teacher"
+                SET name       = $2,
+                    age        = $3,
+                    experience = $4,
+                    sex        = $5,
+                    subject    = $6
+                WHERE id = $1`,
+            [id, name, age, experience, sex, subject]);
+}
+
+function updateLessonDB(id: number, day: string, start_time: number, teacher_id: number,
+                        zoom_url: string, classroom_id: number) {
+    return client
+        .query(`UPDATE "public"."lesson"
+                SET day          = $2,
+                    start_time   = $3,
+                    teacher_id   = $4,
+                    zoom_url     = $5,
+                    classroom_id = $6
+                WHERE lesson_id = $1`,
+            [id, day, start_time, teacher_id, zoom_url, classroom_id]);
+}
+
+function deleteFromTeacherDB(id: number) {
+    return client
+        .query('DELETE FROM "public"."teacher" WHERE id = $1', [id]);
+}
+
+function deleteFromLessonDB(id: number) {
+    return client
+        .query('DELETE FROM "public"."lesson" WHERE id = $1', [id]);
+}
+
+// function test(day: string, time: number, t_id: number) {
+//     return client
+//         .query('INSERT INTO "public"."lesson" (day, start_time, teacher_id) values ($1, $2, $3)',
+//             [day, time, t_id]);
+// }
+
+export {
+    connectToDatabase, readDataFromTeacherDB, getTargetMathTeachers, addDataIntoTeacherDB,
+    updateTeacherDB
+}
