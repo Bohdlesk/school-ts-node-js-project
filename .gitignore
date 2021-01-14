@@ -1,7 +1,6 @@
 /.idea
-/src/.env
+.env
 /src/test.ts
 school-ts-node-js-project.iml
 node_modules
 dist
-test.sql
