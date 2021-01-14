@@ -20,9 +20,9 @@ function connectToDatabase() {
 }
 
 
-function readDataFromTeacherDB(): Promise<QueryResult<any>> {
+function readDataFromTeacherDB(sortParams?: string): Promise<QueryResult<any>> {
     return client
-        .query('SELECT * FROM "public"."teacher"')
+        .query('SELECT * FROM "public"."teacher"' + sortParams)
 }
 
 function getTargetMathTeachers() {
@@ -98,13 +98,7 @@ function deleteFromLessonDB(id: number) {
         .query('DELETE FROM "public"."lesson" WHERE id = $1', [id]);
 }
 
-// function test(day: string, time: number, t_id: number) {
-//     return client
-//         .query('INSERT INTO "public"."lesson" (day, start_time, teacher_id) values ($1, $2, $3)',
-//             [day, time, t_id]);
-// }
-
 export {
     connectToDatabase, readDataFromTeacherDB, getTargetMathTeachers, addDataIntoTeacherDB,
-    updateTeacherDB
+    updateTeacherDB, deleteFromTeacherDB
 }
